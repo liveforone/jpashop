@@ -34,13 +34,22 @@ public class OrderApiController {
         return all;
     }
 
-    @GetMapping("/api/v2/orders")
+    @GetMapping("/api/v2/orders")  //DTO변환
     public List<OrderDto> ordersV2() {
         List<Order> orders = orderRepository.findAllByString(new OrderSearch());
-        List<OrderDto> collect = orders.stream()
+        List<OrderDto> result = orders.stream()
                 .map(o -> new OrderDto(o))
                 .collect(Collectors.toList());
-        return collect;
+        return result;
+    }
+
+    @GetMapping("/api/v3/orders")  //DTO변환 페치조인
+    public List<OrderDto> ordersV3() {
+        List<Order> orders = orderRepository.findAllWithItem();
+        List<OrderDto> result = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(Collectors.toList());
+        return result;
     }
 
     @Getter  //자바의 프라퍼티는 게터를 의미, 노 프라버티 에러시 게터를 삽입, @Data 써도 무방
