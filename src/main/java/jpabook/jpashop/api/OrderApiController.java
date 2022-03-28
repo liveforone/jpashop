@@ -72,6 +72,11 @@ public class OrderApiController {
         return orderQueryRepository.findOrderQueryDtos();
     }
 
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> ordersV5() {
+        return orderQueryRepository.findAllByDto_optimization();
+    }
+
     @Getter  //자바의 프라퍼티는 게터를 의미, 노 프라버티 에러시 게터를 삽입, @Data 써도 무방
     static class OrderDto {
 
