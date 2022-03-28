@@ -97,7 +97,7 @@ public class OrderRepository {
                         " join fetch o.member m" +
                         " join fetch o.delivery d", Order.class
         ).getResultList();
-    }
+    }  //ToOne 관계를 페치 조인했기 때문에 페이징은 가능하다
 
     public List<OrderSimpleQueryDto> findOrderDtos() {
         return em.createQuery(
@@ -116,5 +116,17 @@ public class OrderRepository {
                         " join fetch o.orderItems oi" +
                         " join fetch oi.item i", Order.class
         ).getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {  //재사용성이 높음
+        return em.createQuery(
+                        "select o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d", Order.class
+                )
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+
     }
 }
